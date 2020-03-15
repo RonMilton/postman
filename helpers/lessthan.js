@@ -24,5 +24,10 @@
  * THE SOFTWARE.
  */
 module.exports = function(data) {
-  return JSON.stringify(data);
+  
+  if (typeof(data) == "string"){
+    data = data.replace(/&lt;/g, "<");
+  }
+  return data;
+
 };

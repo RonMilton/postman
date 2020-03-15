@@ -36,29 +36,29 @@
                             <a class="nav-link active">Settings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link">Headers [<span data-bind="text: headers().length + 1"></span>]</a>
+                            <a class="nav-link">Headers [<span data-bind="text: headers().length"></span>]</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link">Body</a>
                         </li>
-                        <li class="nav-item">
+                        <!--<li class="nav-item">
                             <a class="nav-link">Code Generation</a>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
                 <div class="reqcontent">
                     <div class="tabcontent settings">
-                        <p><strong>URL:</strong> <span data-bind="text: computedUrl"></span> <i class="fas fa-check-circle" data-bind="visible: urlcheck"></i><input type="hidden" class="rawurl" value="{{{method.request.url.raw}}}"/></p>
+                        <p><strong>URL:</strong> <span data-bind="text: computedUrl"></span> <!--<i class="fas" data-bind=""></i>--><input type="hidden" class="rawurl" value="{{{method.request.url.raw}}}"/></p>
                         <p><strong>Protocol:</strong> <select data-bind="options: protocols, value: selprotocol"></select></p>
                         <p><strong>Variables:</strong></p>
                         <ul class="urlvars" data-bind="foreach: urlvars">
-                            <li><span data-bind="text: raw"></span> <input type="text" data-bind="attr: {placeholder: raw}, textInput: obs" /></li>
+                            <li><span data-bind="text: raw, css: { error: $root.sendtried() && !obs() }"></span> <input type="text" data-bind="attr: {placeholder: raw}, textInput: obs, css: { error: $root.sendtried() && !obs() }" /></li>
                         </ul>
                     </div>
                         <div class="tabcontent headers hidden">
-                            <p><strong>Authorization token:</strong><textarea rows="8" data-bind="textInput: authtoken"></textarea><span data-bind="click: selectall, visible: authtoken()">Select all</span></p>
+                            <!--<p><strong>Authorization token:</strong><textarea rows="8" data-bind="textInput: authtoken"></textarea><span data-bind="click: selectall, visible: authtoken()">Select all</span></p>-->
                             
-                            <p><strong>Other headers to send:</strong></p>
+                            <p><strong>Headers to send:</strong></p>
                             <p data-bind="visible: headers().length == 0">None</p>
                             {{#each method.request.header as |head key|}}
                                 <div class="headGroup"><input type="hidden" class="headKey" value="{{{this.key}}}"/><input type="hidden" class="headVal" value="{{{this.value}}}"/></div>
@@ -70,10 +70,10 @@
                             <button data-bind="click: addHeader">Add header</button>
                         </div>
                     <div class="tabcontent body hidden">
-                        <input type="hidden" class="reqbody" value="{{{method.request.body.raw}}}"/>
+                        <input type="hidden" class="reqbody" value="{{lessthan method.request.body.raw}}"/>
                         <textarea data-bind="textInput: reqbody" rows="6"></textarea>
                     </div>
-                    <div class="tabcontent code-generation hidden"><p>Code Generation</p><p>Will need to:<ul><li>Change language</li><li>Use current UI data</li></ul></p><p>URL: <span data-bind="text: computedUrl"></span><p>Method: <span data-bind="text: method"></span></p><p>Headers:</p><ul data-bind="foreach: headers"><li><span data-bind="text: key"></span>: <span data-bind="text: value"></span></li></ul></p><p>Body:<br><span data-bind="text: reqbody"></span></p></div>
+                    <!--<div class="tabcontent code-generation hidden"><p>Code Generation</p><p>Will need to:<ul><li>Change language</li><li>Use current UI data</li></ul></p><p>URL: <span data-bind="text: computedUrl"></span><p>Method: <span data-bind="text: method"></span></p><p>Headers:</p><ul data-bind="foreach: headers"><li><span data-bind="text: key"></span>: <span data-bind="text: value"></span></li></ul></p><p>Body:<br><span data-bind="text: reqbody"></span></p></div>-->
                 </div>
             </div>
             
@@ -99,7 +99,7 @@
                     <div class="tabcontent body hidden">
                         <p>Status: <span data-bind="text: xhrstatus"></span> <span data-bind="text: xhrstatustext"></span></p>
                         <p data-bind="visible: !xhrstatus()">This error typically means either your URL is not constructed properly or the server is not configured for CORS requests. Check that the URL in the Settings tab above is what you expect. If the URL is correct, the server you're attempting to access may not be configured for cross-site requests.</p>
-                        <pre><code data-bind="text: resbody"></code></pre>
+                        <pre data-bind="visible: xhrstatus()"><code data-bind="text: resbody"></code></pre>
                     </div>
                     <div class="tabcontent headers hidden">
                         <p data-bind="visible: resheaders().length"><strong>Headers received:</strong>

@@ -10,6 +10,7 @@ $(function() {
         self.urlvars = ko.observableArray();
         self.urlvarsstore = ko.observableArray();
         self.headers = ko.observableArray();
+        self.sendtried = ko.observable(false);
   
         self.resheaders = ko.observableArray();
         self.resbody = ko.observable();
@@ -17,8 +18,9 @@ $(function() {
         self.xhrstatustext = ko.observable();
         self.method = ko.observable("GET");
         self.authtoken = ko.observable();
+        
         self.urlcheck = ko.pureComputed(function(){
-            return self.URLPATTERN.test(self.computedUrl());
+            return self.URLPATTERN.test(self.computedUrl().trim());
         }, this);
         self.computedUrl = ko.computed(function(){
 
@@ -37,14 +39,21 @@ $(function() {
                 
                 
             })
-
             
             
             return returl;
 
         }, this);
+        self.sendreqcheck = ko.computed(function(){
+            valid = true;
+            if (!self.urlcheck()){
+                valid = false;
+            }
+            return valid;
+        }, this);
+        
         self.openTry = function(data, event){
-            //self.clearRoot();
+            
             self.refresh();
             let target = $(event.target);
             let reqcard = target.next('.tryitcard');
@@ -144,12 +153,14 @@ $(function() {
             let resheadarray = [];
             let ajaxhead = {};
 
+            self.sendtried(true);
             self.resheaders.removeAll();
             self.resbody('');
             self.xhrstatus('');
             self.xhrstatustext('');
 
-           // if (testres.is(':hidden')){
+           if (self.sendreqcheck()){
+                self.sendtried(false);
                 testres.removeClass('hidden');
 
                 spinner.removeClass('hidden');
@@ -204,9 +215,9 @@ $(function() {
                     spinner.addClass('hidden');
                     resdata.removeClass('hidden');
                 });
-            //} else {
-              //  alert('Click Try a Request to close and again to reopen before clicking Send again.')
-            //}
+            } else {
+                testres.addClass('hidden');
+            }
             
         }
         $('h3.method').each(function() {

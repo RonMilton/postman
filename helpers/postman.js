@@ -25,12 +25,9 @@
  */
 module.exports = function(data) {
   let type = typeof(data);
-  let retval = data;
   
-  if (type=="string"){    
-    retval = data;
-  } else {
-    retval = JSON.stringify(data, null, 4);
+  if (type !== "string"){    
+    data = JSON.stringify(data, null, 4);
   }
-  return retval;
+  return data;
 };

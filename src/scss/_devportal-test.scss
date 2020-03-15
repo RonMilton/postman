@@ -110,6 +110,15 @@
                 input[type="text"]{
                     width: 50%;
                 }
+                input.error {
+                    background-color: $error-bg;
+                }
+                span.error {
+                    font-weight: bold;
+                    &:after {
+                        content: " **";
+                    }
+                }
             }
             &.headers {
                 input[type="text"]{
