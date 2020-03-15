@@ -1,0 +1,227 @@
+#template-main-content{
+    position: relative;
+    .content-pro {
+        font-family: $font-pn-regular;
+        h1, h2, h3 {
+            font-family: $ping-font-gotham;
+            color: $p14c-black;
+        }
+        h1 {
+            padding: map-get($spacers, 4) 0;
+            font-size: 30px;
+            font-weight: 300;
+            color: $p14c-red;
+        }
+        h2 {
+            padding: map-get($spacers, 3) 0;
+            font-size: 28px;
+            font-weight: 500;
+        }
+        h3 {
+            padding: map-get($spacers, 2) 0;
+            font-size: 24px;
+            font-weight: 500;
+        }
+        h4 {
+            font-size: $font-size-base;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        p, ol, ul, td {
+            font-size: $default-font-size;
+        }
+        .description, .content-sub-desc, #api-title
+        {
+            width: $left-pane-width;
+            padding: map-get($spacers, 4) $spacer map-get($spacers, 2) 0;
+        }
+        .content-sect-description {
+            width: $left-pane-width;
+            padding-right: $spacer;
+        }
+        .content-sub-desc {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .description{
+            h1, h2, h3 {
+                padding-top: $spacer;
+            }
+        }
+        .content-sect {
+            padding-top: map-get($spacers, 4);
+        }
+        .method {
+            position: relative;
+            overflow: hidden;
+            .content { 
+                float: left;
+                padding: map-get($spacers, 4) $spacer map-get($spacers, 4) 0;
+                width: $left-pane-width;
+                h3::before {
+                    padding-right: map-get($spacers, 2);
+                }
+                h3.GET::before {
+                    content: 'GET';
+                    color: $green;
+                }
+                h3.POST::before {
+                    content: 'POST';
+                    color: $orange;
+                }
+                h3.PATCH::before {
+                    content: 'PATCH';
+                    color: $gray-600;
+                }
+                h3.DELETE::before {
+                    content: 'DEL';
+                    color: $red;
+                }
+                h3.PUT::before {
+                    content: 'PUT';
+                    color: $blue;
+                }
+                
+                h4 {
+                    padding-top: map-get($spacers, 4);
+                }
+            }
+            .samples {
+                width: $right-pane-width;
+                margin-left: $right-pane-margin;
+                padding: map-get($spacers, 4) $spacer;
+                color: $samples-color;
+            }
+            hr {
+                height: 1px;
+                position: relative;
+                background-color: $icon-row-background;
+                width: 200%;
+                &:before {
+                    background-color: $right-pane-background;
+                    z-index: 1;
+                    content: '';
+                    display: block;
+                    width: $left-pane-width;
+                    height: 1px;
+                    position: absolute;
+                    top: -1px;
+                } 
+            }
+        }
+        h4 span {
+            font-weight: normal;
+            font-size: $font-size-base;
+            padding-left: $spacer;
+        }
+        img {
+            max-width: 100%;
+        }
+        .alert {
+            padding: 10px 15px;
+            margin: 20px 0;
+            border: none;
+            color: #1d4264;
+            &.alert-info{
+                background-color: #C1D3EC;
+                border: 1px solid $p14c-blue;
+            }
+            &.alert-warning {
+                background-color: rgba(230, 227, 69, .3);
+                border: 1px solid #E85317;
+            }
+            &.alert-danger {
+                background-color: rgba(232, 46, 50, .3);
+                border: 1px solid $p14c-red;
+            }
+            &.alert-success {
+                background-color: rgba(87, 190, 86, .3);
+                border: 1px solid $green;
+            }
+            .alert-icon {
+                float: left;
+                i {
+                    &.fa-check-circle {
+                        color: $green;
+                    }
+                    &.fa-exclamation-circle {
+                        color: $p14c-red;
+                    }
+                    &.fa-exclamation-triangle {
+                        color: #E85317;
+                    }
+                }
+            }
+            .alert-message {
+                margin-left: 25px;
+                > p {
+                margin-bottom: 0;
+                } 
+            }
+        }
+    }
+    &.single-column{
+        .content-pro {
+            .description, .content-sub-desc, #api-title, .content-sect-description
+            {
+                width: 100%;
+            }
+            .method {
+                .content, .samples {
+                    width: 100%;
+                }
+                .content { 
+                    float: none;
+                }
+                .samples {
+                    margin-left: 0;
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+            hr {
+                height: 1px;
+                position: relative;
+                background-color: $right-pane-background;
+                width: 100%;
+                &:before {
+                    background-color: $right-pane-background;
+                    z-index: 1;
+                    content: '';
+                    display: inline;
+                    position: relative;
+                } 
+            }
+        }
+    }
+}
+.content {
+    /*hr {
+        width: 100%;
+        background-color: $heather;
+    }*/
+    overflow-x: auto;
+    .headers-table {
+        border: 1px solid #ccc;
+        .headGroup {
+            &:nth-child(odd){
+                background-color: rgba(165, 187, 195, 0.1);
+            }
+            padding: 1rem;
+        }
+    }
+    .headGroup {
+        .headKey{
+            font-weight: bold;
+            padding-right: $spacer;
+            float: left;
+        }
+    }
+}
+h3.method{
+    cursor: default;
+}
+
+
+
+

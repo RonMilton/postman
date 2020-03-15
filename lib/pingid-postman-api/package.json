@@ -1,0 +1,14 @@
+{
+    "name": "openapi-reader",
+    "version": "1.0.0",
+    "description": "Consumes the Open API specification for Ping API docs.",
+    "main": "index.js",
+    "scripts": {
+      "test": "mocha test/test.js"
+    },
+    "author": "Ronny Roland <ronnyroland@pingidentity.com>",
+    "license": "MIT",
+    "devDependencies": {
+      "mocha": "^3.2.0"
+    }
+  }

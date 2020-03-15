@@ -1,0 +1,66 @@
+{
+  "name": "postman-collection-transform",
+  "version": "1.0.0",
+  "description": "Process postman collections",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RonMilton/postman.git"
+  },
+  "author": "Ronny Roland",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RonMilton/postman/issues"
+  },
+  "homepage": "https://github.com/RonMilton/postman#readme",
+  "dependencies": {
+    "better-npm-run": "^0.1.1",
+    "chalk": "^3.0.0",
+    "fs": "0.0.1-security",
+    "highlight.js": "^9.18.1",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.15",
+    "markdown-it-container": "^2.0.0",
+    "metalsmith": "^2.3.0",
+    "metalsmith-discover-partials": "^0.1.2",
+    "metalsmith-filemetadata": "^1.0.0",
+    "metalsmith-handlebars": "^1.1.0",
+    "metalsmith-if": "^0.1.1",
+    "metalsmith-jquery": "^0.2.2",
+    "metalsmith-layouts": "^2.3.1",
+    "metalsmith-markdownit": "^0.5.0",
+    "metalsmith-metallic": "^2.0.3",
+    "metalsmith-permalinks": "^2.2.0",
+    "metalsmith-register-helpers": "^0.4.0",
+    "metalsmith-sass": "^1.7.0",
+    "metalsmith-serve": "0.0.7",
+    "metalsmith-static": "0.0.5",
+    "metalsmith-watch": "^1.0.3",
+    "path": "^0.12.7",
+    "postman-code-generators": "^0.2.4",
+    "postman-collection": "^3.6.0",
+    "prismjs": "^1.19.0"
+  },
+  "devDependencies": {
+    "better-npm-run": "^0.1.1"
+  },
+  "scripts": {
+    "build": "better-npm-run build",
+    "build:serve": "better-npm-run build:serve",
+    "test": "better-npm-run test"
+  },
+  "betterScripts": {
+    "build": {
+      "command": "node index.js"
+    },
+    "build:serve": {
+      "command": "node index.js",
+      "env": {
+        "DEPLOYMENT_STAGE": "development"
+      }
+    },
+    "test": {
+      "command": "echo \"Error: no test specified\" && exit 1"
+    }
+  }
+}

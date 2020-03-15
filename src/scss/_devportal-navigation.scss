@@ -1,0 +1,193 @@
+#template-main-nav {
+    background: $nav-pane-background;
+    border-right: 1px solid #dcdcdc;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+    #navigation, #offpage-wrapper {
+        margin-top: map-get($spacers, 5);
+        h1 {
+            font-size: $h5-font-size;
+        }
+        ul {
+            padding-left: 0;
+            list-style-type: none;
+            font-size: $font-size-sm;
+            ul {
+                padding-left: $spacer;
+                display: none;
+            }
+        }
+        li a {
+            color: $right-pane-background;
+            font-weight: 100;
+        }
+        li.folder, li.toplevel {
+            //font-weight: bold;
+            padding: map-get($spacers, 2) 0;
+        }
+        li.heading{
+            position: relative;
+            padding: map-get($spacers, 1) 0;
+            font-weight: normal;
+            a{
+                font-size: $font-size-sm;
+                position: relative;
+                top: 2px;
+            }
+    
+        }
+        li.method{
+            position: relative;
+            overflow: hidden;
+            padding: map-get($spacers, 1) 0;
+            font-weight: normal;
+            padding-left: 42px !important;
+            text-indent: -41px;
+            margin-left: -1rem;
+            a{
+                font-size: $font-size-sm;
+                position: relative;
+                top: 2px;
+            }
+            &::before{
+                font-size: map-get($spacers, 2);
+                content: '';
+                padding: 2px map-get($spacers, 1) 2px 0;
+                //font-weight: bold;
+                //color: #fff;
+                //border-radius: 4px;
+                //margin-right: map-get($spacers, 1);
+                //min-width: 32px;
+                //display: inline-block;
+                //text-align: center;
+            }
+            &.GET::before {
+                content: 'GET';
+                //background: $green;
+                color: $green;
+                padding-right: 17px;
+            }
+            &.POST::before {
+                content: 'POST';
+                //background: $orange;
+                color: $orange;
+                padding-right: 10px;
+            }
+            &.PATCH::before {
+                content: 'PATCH';
+                //background: $gray-600;
+                color: $gray-600;
+            }
+            &.DELETE::before {
+                content: 'DEL';
+                //background: $red;
+                color: $red;
+                padding-right: 17px;
+            }
+            &.PUT::before{
+                content: 'PUT';
+                //background: $blue;
+                color: $blue;
+                padding-right: 17px;
+            }
+        }
+        i {
+            color: $gray-600;
+            padding-right: map-get($spacers, 1);
+            cursor: pointer;
+        }
+        
+        #nav-search {
+            padding: .5rem 0;
+            font-size: $font-size-sm;
+            position: relative;
+            #jump-bar {
+                position: relative;
+                border-bottom: 1px solid $right-pane-background;
+                #search-close {
+                    float: right;
+                    i {
+                        cursor: pointer; 
+                        //position: absolute;
+                        //right: 23px;
+                    }
+                }
+                i {
+                    float: left;
+                    cursor: default;
+                    padding: 4px 8px 5px 0;
+                }
+                input {
+                    background: transparent;
+                    border: 0;
+                    width: 80%;
+                    &:focus {
+                        outline: 0;
+                    }
+                }
+            }
+            #toggle-all {
+                font-size: .5rem;
+                padding-top: 1rem;
+                p {
+                    margin: 0;
+                }
+                span {
+                    padding-left: $spacer;
+                }
+                a.disabled {
+                    color: #ccc !important;
+                    text-decoration: none !important;
+                    cursor: default;
+                }
+            }
+            
+            #nav-search-list{
+                border: 1px solid $right-pane-background;
+                max-height: 40vh;
+                overflow-y: auto;
+                margin-bottom: 0;
+                li {
+                    background-color:rgba(255, 255, 255, .8);
+                    padding: map-get($spacers, 1) map-get($spacers, 2);
+                    a {
+                        display: block;
+                    }
+                    &:hover{
+                        background-color: rgba(255, 255, 255, .2);
+                    }
+                    
+                }
+            }
+            
+        }
+        #nav-list {
+            .active {
+                color:$p14c-red;
+            }
+        }
+        #nav-list-offpage {
+            position: relative;
+        }
+        
+    }
+    #offpage-wrapper{
+        position: fixed;
+        left: -5000px;
+        top: 0;
+    }
+    
+}
+
+.tooltip {
+    //color: $right-pane-background;
+    color: #efefef;
+    font-size: $font-size-sm;
+    z-index: 3;
+    .tooltip-inner {
+        padding: 4px;
+    }
+}

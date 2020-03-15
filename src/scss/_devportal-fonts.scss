@@ -1,0 +1,21 @@
+@font-face { font-family: 'ProximaNovaRegular'; font-weight: normal; src: url('#{$font-file-path}ProximaNova-Regular.otf'); }
+@font-face { font-family: 'ProximaNovaBold'; font-weight: bold; src: url('#{$font-file-path}ProximaNova-Bold.otf'); }
+@font-face { font-family: 'ProximaNovaLight'; font-weight: normal; src: url('#{$font-file-path}ProximaNova-Light.otf'); }
+@font-face { font-family: 'ProximaNovaSemibold'; font-weight: normal; src: url('#{$font-file-path}ProximaNova-Semibold.otf'); }
+@font-face { font-family: 'ProximaNovaCondRegular'; font-weight: normal; src: url('#{$font-file-path}ProximaNovaCond-Regular.otf'); }
+
+@mixin font-pn-regular () {
+    font-family: $font-pn-regular;
+}
+@mixin font-pn-bold () {
+    font-family: $font-pn-bold;
+}
+@mixin font-pn-light () {
+    font-family: $font-pn-light;
+}
+@mixin font-pn-semibold () {
+    font-family: $font-pn-semibold;
+}
+@mixin font-pn-cond-regular () {
+    font-family: $font-pn-cond-regular;
+}

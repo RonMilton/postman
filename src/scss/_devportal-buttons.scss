@@ -1,0 +1,26 @@
+button, .button {
+    border-radius: 3px;
+    -ms-border-radius: 3px;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    font-family: $ping-font-gotham;
+    font-weight: 400;
+    cursor: pointer;
+    //text-transform: uppercase;
+    box-sizing: border-box;
+    padding: 0 20px;
+    height: 36px;
+    border: 1px solid #263746;
+    font-size: 14px;
+    line-height: 36px;
+}
+
+.button--secondary {
+    background-color: #7094AA;
+    border-color: #7094AA;
+    color: #fff;
+}

@@ -1,0 +1,45 @@
+#sample-toolbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    padding: 10px 12px;
+    &.solid-left-pane-bg {
+        //background: rgba(235, 244, 247, 1);
+        background: rgba(112, 148, 170, 1)
+    }
+    &.faded-left-pane-bg {
+        //background: rgba(235, 244, 247, .8);
+        background: rgba(112, 148, 170, .8);
+    }
+    
+    #langsel {
+        float: left;
+        /* left: -42px; */
+        /* display: block; */
+        z-index: 3;
+    }
+    .button--secondary {
+        background: $right-pane-background;
+        border-color: $nav-pane-background;
+    }
+    #col-select {
+        float: right;
+        cursor: pointer;
+        top: 20px;
+        right: 20px;
+        z-index: 1;
+        .far, .fas {
+            padding: map-get($spacers, 2);
+            font-size: $font-size-lg;
+        }
+        .far {
+            color: $nav-pane-background;
+            background: rgba($right-pane-background, .8);
+        }
+        .fas {
+            color: $right-pane-background;
+            background: rgba($white, .8);
+        }
+    }
+}

@@ -1,0 +1,42 @@
+$font-file-path: '/fonts/proxima-nova/';
+
+$body-color: #4d4d4d;
+
+$ping-font-body: "Roboto", helvetica, arial, sans-serif;
+$ping-font-gotham: Gotham, helvetica, arial, sans-serif;
+
+$font-pn-regular: 'ProximaNovaRegular', helvetica, arial, sans-serif;
+$font-pn-bold: 'ProximaNovaBold', helvetica, arial, sans-serif;
+$font-pn-light: 'ProximaNovaLight', helvetica, arial, sans-serif;
+$font-pn-semibold: 'ProximaNovaSemibold', helvetica, arial, sans-serif;
+$font-pn-cond-regular: 'ProximaNovaCondRegular', helvetica, arial, sans-serif;
+$font-code: 'Courier New', monospace;
+$default-font-size: 15px;
+
+/**** Colors **/
+$white: #ffffff;
+$black: #000000;
+$bermuda-gray: #7094AA;
+$heather: #A5BBC3;
+$pickled-bluewood: #263746;
+$madison: #2E4355;
+$pacific-blue: #0082C9;
+$ping-red: #B8232F;
+$p14c-red: #B62528;
+$p14c-blue: #2e4355;
+$p14c-black: #26374A;
+
+$p14c-text: $p14c-black;
+$link-color: $pacific-blue;
+
+$left-pane-width: 60%;
+$right-pane-width: 100% - $left-pane-width;
+$right-pane-margin: $left-pane-width + $right-pane-width/110;
+
+// $nav-pane-background: rgba(235, 244, 247, 1); // #EBF4F7
+$nav-pane-background: #ededed;
+$right-pane-background: rgba(53, 55, 56, 1); // #353738
+$samples-color: $white;
+$icon-row-background: rgba(235, 244, 247, .5);
+//$icon-row-background: rgba(112, 148, 170, 1);
+$icon-row-color: $right-pane-background;
