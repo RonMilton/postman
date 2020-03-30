@@ -1,28 +1,47 @@
-#sample-toolbar {
+#barwrapper {
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 20px;
+    right: -350px;
     z-index: 3;
     padding: 10px 12px;
+    border-radius: 3px 0 0 3px;
+    width: 400px;
     &.solid-left-pane-bg {
         //background: rgba(235, 244, 247, 1);
         background: rgba(112, 148, 170, 1)
     }
     &.faded-left-pane-bg {
         //background: rgba(235, 244, 247, .8);
-        background: rgba(112, 148, 170, .8);
+        background: rgba(94, 73, 43, .8);
     }
-    
+    .slider {
+        color: $white;
+        cursor: pointer;
+        &:hover {
+            color: rgba(247, 224, 139, .8);
+        }
+    }
     #langsel {
-        float: left;
-        /* left: -42px; */
-        /* display: block; */
+        display: inline-block;
         z-index: 3;
+        margin-left: $spacer;
+        a.activelang {
+            display: none;
+        }
     }
     .button--secondary {
         background: $right-pane-background;
         border-color: $nav-pane-background;
     }
+    #col-select {
+        color: #F7E08B;
+        cursor: pointer;
+        margin-left: $spacer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    /*
     #col-select {
         float: right;
         cursor: pointer;
@@ -42,4 +61,5 @@
             background: rgba($white, .8);
         }
     }
+    */
 }

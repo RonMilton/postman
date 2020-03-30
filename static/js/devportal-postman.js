@@ -1,3 +1,15 @@
+$.fn.isInViewport = function() {
+    var elementTop = $(this).offset().top;
+    var elementBottom = elementTop + $(this).outerHeight();
+
+    var viewportTop = $(window).scrollTop();
+    var viewportBottom = viewportTop + $(window).height();
+
+    return elementBottom > viewportTop && elementTop < viewportBottom;
+};
+
+
+
 $(document).ready(function(){
 
     setIcons();
@@ -18,17 +30,72 @@ $(document).ready(function(){
     });
 
     function setIcons(){
-        $('.wrap-icon, .expand-icon').addClass('hidden');
+        pretext = "Language - ";
+        langdisplay = $('.dropdown-item.activelang').text();
+        langsel = "." + $('.dropdown-item.activelang').attr('class').split(/\s+/)[0];
+        blockinview = $('.exampleReq .devp-code-block.inview');
+        blocknotinview = $('.exampleReq .devp-code-block').not('.inview');
+
+        // tag 
+        $('.inview').removeClass('inview');
+        $('.samples .devp-code-block').filter(function(){
+            return $(this).isInViewport();
+        }).parent().addClass("inview");
+
+        if ($('#dropdownMenuButton').hasClass('changed')){
+            $('.spinner-border.text-light').addClass('hidden');
+            $('.exampleReq').find('code').removeClass('invisible');
+            blockinview.children(langsel).removeClass('hidden');
+            blockinview.parent().find('.wrap-icon, .expand-icon').addClass('hidden');
+            blockinview.find('pre').not('.hidden').each(function(){
+                if($(this).height() >= 180){
+                    $(this).parent().prevAll('.iconrow').children('.expand-icon').removeClass('hidden');
+                }
+                if($(this).innerWidth() < $(this)[0].scrollWidth){
+                    $(this).parent().prevAll('.iconrow').children('.wrap-icon').removeClass('hidden');
+                }
+            });
+            $('#dropdownMenuButton').text(pretext + langdisplay);
+            blocknotinview.children('.req').addClass('hidden');
+            blocknotinview.children(langsel).removeClass('hidden');
+            blocknotinview.parent('.exampleReq').find('.wrap-icon, .expand-icon').addClass('hidden');
+            blocknotinview.children(langsel).each(function(){
+                if($(this).height() >= 180){
+                    $(this).parent().prevAll('.iconrow').children('.expand-icon').removeClass('hidden');
+                }
+                if($(this).innerWidth() < $(this)[0].scrollWidth){
+                    $(this).parent().prevAll('.iconrow').children('.wrap-icon').removeClass('hidden');
+                }
+            });
+            $('#dropdownMenuButton').removeClass('changed');
+        } else {
+            $('.samples .devp-code-block.inview').parent().parent().find('pre').not('.hidden').each(function(){
+                if($(this).height() >= 180){
+                    $(this).parent().prevAll('.iconrow').children('.expand-icon').removeClass('hidden');
+                }
+                if($(this).innerWidth() < $(this)[0].scrollWidth){
+                    $(this).parent().prevAll('.iconrow').children('.wrap-icon').removeClass('hidden');
+                }
+            });
+            $('.samples .devp-code-block').not('.inview').parent().parent().find('pre').each(function(){
+                if($(this).height() >= 180){
+                    $(this).parent().prevAll('.iconrow').children('.expand-icon').removeClass('hidden');
+                }
+                if($(this).innerWidth() < $(this)[0].scrollWidth){
+                    $(this).parent().prevAll('.iconrow').children('.wrap-icon').removeClass('hidden');
+                }
+            });
+            
+        }
         
-        $('.samples pre').not('.hidden').each(function(){
-            if($(this).height() >= 180){
-                $(this).parent().prevAll('.iconrow').children('.expand-icon').removeClass('hidden');
-            }
-            if($(this).innerWidth() < $(this)[0].scrollWidth){
-                $(this).parent().prevAll('.iconrow').children('.wrap-icon').removeClass('hidden');
-            }
-        })
+        
+        
     }
+
+    $('.nav-item i').click(function(e){
+        let target = $(e.target);
+        openNav(target);
+    })
 
     function openNav(target){
         if (target.length){
@@ -151,20 +218,6 @@ $(document).ready(function(){
 
         var offsetresult = (firstvisibleref.offset().top - refanchor.offset().top) + firstvisibleparent.offset().top;
         
-        /*
-        if($(menuitem[0]).is(':hidden')){
-            openNav($(menuitem[0]));
-            setTimeout(function() {
-                menuitem[0].scrollIntoView(true);
-              }, 400);
-              setTimeout(function() {
-                menuitem[0].click();
-              }, 500);
-        } else {
-            menuitem[0].scrollIntoView(true);
-            menuitem[0].click();
-        }
-        */
         
         $("#template-main-nav").animate({
             scrollTop: offsetresult - $("#template-main-nav").offset().top - $('#navigation').position().top
@@ -240,54 +293,32 @@ $(document).ready(function(){
         
     })
 
-    $('.dropdown').on('shown.bs.dropdown', function () {
-        $('.dropdown-item').click(function(e){
-            e.preventDefault();
-            target = $(e.target);
-            parent = target.parent('li');
-            targettext = target.text();
-            pretext = "Language - ";
-            curlang = $('#dropdownMenuButton').text().replace(pretext, "");
-            $('#dropdownMenuButton').text(pretext + targettext);
-            $('.dropdown-menu').children('li').removeClass("hidden");
-            parent.addClass("hidden");
-            $('.req').addClass('hidden');
-            switch (targettext){
-                case 'PHP':
-                    $('.req.php').removeClass('hidden');
-                    break;
-                case 'Python':
-                    $('.req.python').removeClass('hidden');
-                    break;
-                case 'cURL':
-                    $('.req.curl').removeClass('hidden');
-                    break;
-                case 'Node':
-                    $('.req.node').removeClass('hidden');
-                    break;
-                case 'Go':
-                    $('.req.go').removeClass('hidden');
-                    break;
-                case 'JQuery':
-                    $('.req.jquery').removeClass('hidden');
-                    break;
-                case 'HTTP':
-                    $('.req.http').removeClass('hidden');
-                    break;
-                default:
-            }
-            setIcons();
-        });
+   
+    $('.dropdown-item').click(function(e){
+        e.preventDefault();
+        target = $(e.target);
+        
+        $('#dropdownMenuButton').addClass('changed');
+        $('.exampleReq').find('code').addClass('invisible');
+        $('.spinner-border.text-light').removeClass('hidden');
+        $('.dropdown-item').removeClass('activelang');
+        $(e.target).addClass('activelang');
+        
+        
     });
 
-    $('#navigation li a, #navigation li i').click(function(e){
-        const target = $(e.target);
-        openNav(target);
-    })
-
+    $('.dropdown').on('hide.bs.dropdown', function(){
+        
+        // Delay to stop dropdown from staying visible. Need a promise()?
+        setTimeout(function() {
+            setIcons();
+          }, 100);
+        
+    });
     
 
-    $('#col-select').click(function(){
+    $('#col-select').click(function(e){
+        e.preventDefault();
         if ($('#template-main-content').hasClass('single-column')){
             $('#template-main-content').removeClass('single-column');
             $(this).children('i').removeClass().addClass('far fa-window-maximize');
@@ -347,5 +378,18 @@ $(document).ready(function(){
 
         }
     })
+
+    $('#barwrapper .slider').click(function(e){
+        if ($('#barwrapper').css('right') == '0px'){
+            $('#barwrapper').animate({
+                right: "-350px"
+            }, 500);
+        } else {
+            $('#barwrapper').animate({
+                right: "0px"
+            }, 500);
+        }
+
+    });
 });
 

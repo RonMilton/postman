@@ -9,199 +9,81 @@
 <body data-spy="scroll" data-target="#nav-list" data-offset="0">
 
     <div class="container-fluid">
-        <div id="sample-toolbar" class="clearfix col-md-4 faded-left-pane-bg">
+        
+        <div id="barwrapper" class="clearfix faded-left-pane-bg">
+            <i class="fas fa-code slider"></i>
             <div id="langsel">
                 <div class="dropdown">
                     <button id="dropdownMenuButton" type="button" class="button button--secondary dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Language - cURL
                     </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuButton">
-                        <li class="hidden"><a class="dropdown-item" href="#">cURL</a></li>
-                        <li><a class="dropdown-item" href="#">Go</a></li>
-                        <li><a class="dropdown-item" href="#">HTTP</a></li>
-                        <li><a class="dropdown-item" href="#">JQuery</a></li>
-                        <li><a class="dropdown-item" href="#">Node</a></li>
-                        <li><a class="dropdown-item" href="#">PHP</a></li>
-                        <li><a class="dropdown-item" href="#">Python</a></li>
-                    </ul>
+                    <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuButton">
+                        {{#each mycollection.codelanguages as |language index|}}
+                            <a class="{{language.lang}} dropdown-item{{#unless index}} activelang{{/unless}}" href="#">{{language.display}}</a>
+                        {{/each}}
+                    </div>
                 </div>
             </div>
-            <div data-toggle="tooltip" data-placement="left" title data-original-title="Toggle side view" id="col-select"><i
-                    class="far fa-window-maximize"></i></div>
+            <a id="col-select">Toggle columns</a>
+            <!--<div data-toggle="tooltip" data-placement="left" title data-original-title="Toggle side view" id="col-select"><i
+                    class="far fa-window-maximize"></i>
+            </div>-->
         </div>
+        
         <div class="row">
             <div id="template-main-nav" class="col-md-2">
                 <div id="navigation">
-                    <h1>{{postman.info.name}}</h1>
+                    <h1>{{mycollection.name}}</h1>
                     <div id="nav-search">
                         <div id="jump-bar" class="clearfix">
                             <i class="fas fa-search"></i>
                             <input id="search-box" type="text" placeholder="Jump to...">
                             <span id="search-close" class="hidden"><i class="far fa-times-circle"></i></span>
                         </div>
+                        
                         <ul id="nav-search-list" class="hidden">
-                            {{#each postman.item as |section key|}}
-                                <li><a href="#{{section.htmlindex}}">{{section.name}}</a></li>
-                                {{#each section.item as |sub0 key|}}
-                                <li><a href="#{{sub0.htmlindex}}">{{sub0.name}}</a></li>
-                                    {{#each sub0.item as |sub1 key|}}
-                                    <li><a href="#{{sub1.htmlindex}}">{{sub1.name}}</a></li>
-                                        {{#each sub1.item as |sub2 key|}}
-                                        <li><a href="#{{sub2.htmlindex}}">{{sub2.name}}</a></li>
-                                            {{#each sub2.item as |sub3 key|}}
-                                            <li><a href="#{{sub3.htmlindex}}">{{sub3.name}}</a></li>
-                                            {{/each}}
-                                        {{/each}}
-                                    {{/each}}
-                                {{/each}}
+                            {{#each mycollection.toc as |entry key|}}
+                                <li><a href="#{{entry.htmlid}}">{{entry.name}}</a></li>
                             {{/each}}
+                            
                         </ul>
                         <div id="toggle-all"><p><a class="expand all" href="#">Expand all</a> <span><a class="collapse all disabled" href="#">Collapse all</a></span></p></div>
                     </div>
                     <ul class="nav" id="nav-list">
-                        {{#each postman.item as |section key|}}
-                            <li class="folder nav-item"><i class="fas fa-angle-right"></i><a class="nav-link" href="#{{section.htmlindex}}">{{section.name}}</a>
-                                <ul>
-                                    {{#each section.item as |sub0 key|}}
-                                    <li class="{{#if sub0.isFolder}}folder {{/if}}{{#if sub0.isHeading}}heading {{else}}{{sub0.request.method}} method{{/if}} nav-item">
-                                        {{#if sub0.isFolder}}
-                                            <i class="fas fa-angle-right"></i>{{/if}}<a class="nav-link" href="#{{sub0.htmlindex}}">{{sub0.name}}</a>{{#if sub0.isFolder}}<ul>
-                                        {{else}}
-                                            </li>
-                                        {{/if}}
-                                    {{#each sub0.item as |sub1 key|}}
-                                    <li
-                                        class="{{#if sub1.isFolder}}folder {{/if}}{{#if sub1.isHeading}}heading {{else}}{{sub1.request.method}} method{{/if}} nav-item">
-                                        {{#if sub1.isFolder}}<i class="fas fa-angle-right"></i>{{/if}}<a class="nav-link"
-                                            href="#{{sub1.htmlindex}}">{{sub1.name}}</a>{{#if sub1.isFolder}}<ul>{{else}}
-                                    </li>{{/if}}
-                                    {{#each sub1.item as |sub2 key|}}
-                                    <li
-                                        class="{{#if sub2.isFolder}}folder {{/if}}{{#if sub2.isHeading}}heading {{else}}{{sub2.request.method}} method{{/if}} nav-item">
-                                        {{#if sub2.isFolder}}<i class="fas fa-angle-right"></i>{{/if}}<a class="nav-link"
-                                            href="#{{sub2.htmlindex}}">{{sub2.name}}</a>{{#if sub2.isFolder}}<ul>{{else}}
-                                    </li>{{/if}}
-                                    {{#each sub2.item as |sub3 key|}}
-                                    <li class="{{#if sub3.isHeading}}heading{{else}}{{sub3.request.method}} method{{/if}} nav-item">
-                                        <a class="nav-link" href="#{{sub3.htmlindex}}">{{sub3.name}}</a></li>
-                                    {{/each}}
-                                    {{#if sub2.isFolder}}</ul>
-                            </li>{{/if}}
-                            {{/each}}
-                            {{#if sub1.isFolder}}
-                                </ul>
-                                </li>
-                            {{/if}}
-                            {{/each}}
-                            {{#if sub0.isFolder}}</ul>
-                            </li>{{/if}}
-                            {{/each}}
-                            </ul>
-                            </li>
-                        {{/each}}
+                        {{{mycollection.tochtml}}}
                     </ul>
                 </div>
                 <div id="offpage-wrapper">
                     <ul id="nav-list-offpage">
-                        {{#each postman.item as |section key|}}
-                            <li class="folder nav-item"><i class="fas fa-angle-right"></i><a class="nav-link" href="#{{section.htmlindex}}">{{section.name}}</a>
-                                <ul class='hidden'>
-                                    {{#each section.item as |sub0 key|}}
-                                    <li class="{{#if sub0.isFolder}}folder {{/if}}{{#if sub0.isHeading}}heading {{else}}{{sub0.request.method}} method{{/if}} nav-item">
-                                        {{#if sub0.isFolder}}
-                                            <i class="fas fa-angle-right"></i>{{/if}}<a class="nav-link" href="#{{sub0.htmlindex}}">{{sub0.name}}</a>{{#if sub0.isFolder}}<ul>
-                                        {{else}}
-                                            </li>
-                                        {{/if}}
-                                    {{#each sub0.item as |sub1 key|}}
-                                    <li
-                                        class="{{#if sub1.isFolder}}folder {{/if}}{{#if sub1.isHeading}}heading {{else}}{{sub1.request.method}} method{{/if}} nav-item">
-                                        {{#if sub1.isFolder}}<i class="fas fa-angle-right"></i>{{/if}}<a class="nav-link"
-                                            href="#{{sub1.htmlindex}}">{{sub1.name}}</a>{{#if sub1.isFolder}}<ul>{{else}}
-                                    </li>{{/if}}
-                                    {{#each sub1.item as |sub2 key|}}
-                                    <li
-                                        class="{{#if sub2.isFolder}}folder {{/if}}{{#if sub2.isHeading}}heading {{else}}{{sub2.request.method}} method{{/if}} nav-item">
-                                        {{#if sub2.isFolder}}<i class="fas fa-angle-right"></i>{{/if}}<a class="nav-link"
-                                            href="#{{sub2.htmlindex}}">{{sub2.name}}</a>{{#if sub2.isFolder}}<ul>{{else}}
-                                    </li>{{/if}}
-                                    {{#each sub2.item as |sub3 key|}}
-                                    <li class="{{#if sub3.isHeading}}heading{{else}}{{sub3.request.method}} method{{/if}} nav-item">
-                                        <a class="nav-link" href="#{{sub3.htmlindex}}">{{sub3.name}}</a></li>
-                                    {{/each}}
-                                    {{#if sub2.isFolder}}</ul>
-                            </li>{{/if}}
-                            {{/each}}
-                            {{#if sub1.isFolder}}
-                                </ul>
-                                </li>
-                            {{/if}}
-                            {{/each}}
-                            {{#if sub0.isFolder}}</ul>
-                            </li>{{/if}}
-                            {{/each}}
-                            </ul>
-                            </li>
-                        {{/each}}
+                        {{{mycollection.tochtml}}}
                     </ul>
                     
                 </div>
             </div>
+
             <div id="template-main-content" class="col-md-10">
                 <div class="content-pro">
                     <a id="top"></a>
-                    <h1 id="api-title">{{postman.info.name}}</h1>
-                    <div class="description">{{{postman.info.description}}}</div>
+                    <h1 id="api-title">{{mycollection.name}}</h1>
+                    <div class="description">{{{mycollection.descriptions.[0].description}}}</div>
 
+                    {{#each mycollection.pagehtml as |section index|}}
 
-
-                    {{#each postman.item as |section key|}}
                         <div class="content-sect">
-                        <h1 class="display-4" id="{{section.htmlindex}}">{{section.name}}</h1>
-                        <div class="content-sect-description">{{{section.description}}}</div>
-
-                        {{#each section.item as |sub0 key|}}
-                            {{#if sub0.isHeading}}
-                                <div class="content-sub">
-                                    <div class="content-sub-desc">
-                                        <h2 id="{{sub0.htmlindex}}">{{{sub0.name}}}</h2>
-                                        <div>{{{sub0.description}}}</div>
-                                    </div>
+                            {{#unless section.isMethod}}
+                                {{{createheading section.title section.headlevel section.htmlid}}}
+                                <div class="content-sub-desc">
+                                    {{{section.description}}}
                                 </div>
                             {{else}}
-                                {{~> postman-method method=sub0 ~}}
-                            {{/if}}
-                            {{#each sub0.item as |sub1 key|}}
-                                {{#if sub1.isHeading}}
-                                    <div class="content-sub">
-                                        <div class="content-sub-desc">
-                                            <h2 id="{{sub1.htmlindex}}">{{{sub1.name}}}</h2>
-                                            <div>{{{sub1.description}}}</div>
-                                        </div>
-                                    </div>
-                                {{else}}
-                                    {{~> postman-method method=sub1 ~}}
-                                {{/if}}
-                                {{#each sub1.item as |sub2 key|}}
-                                    {{#if sub2.isHeading}}
-                                        <div class="content-sub">
-                                            <div class="content-sub-desc">
-                                                <h2 id="{{sub2.htmlindex}}">{{{sub2.name}}}</h2>
-                                                <div>{{{sub2.description}}}</div>
-                                            </div>
-                                        </div>
-                                    {{else}}
-                                        {{~> postman-method method=sub2 ~}}
-                                    {{/if}}
-                                    {{#each sub2.item as |sub3 key|}}
-                                        {{~> postman-method method=sub3 ~}}
-                                    {{/each}}
-                                {{/each}}                               
-                            {{/each}}
-                        {{/each}}
+                                {{~> postman-method section.method ~}}
+                            {{/unless}}
                         </div>
+                        
+
                     {{/each}}
+
                 </div>
             </div>
         </div>

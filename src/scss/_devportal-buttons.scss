@@ -1,26 +1,50 @@
 button, .button {
-    border-radius: 3px;
+    border-radius: 3px !important;
     -ms-border-radius: 3px;
     position: relative;
     display: inline-block;
-    outline: none;
     vertical-align: middle;
     text-align: center;
     white-space: nowrap;
     font-family: $ping-font-gotham;
     font-weight: 400;
     cursor: pointer;
-    //text-transform: uppercase;
     box-sizing: border-box;
     padding: 0 20px;
     height: 36px;
     border: 1px solid #263746;
     font-size: 14px;
     line-height: 36px;
+    &:focus {
+        outline: 1px auto !important;
+    }
+}
+.button--primary {
+    background: $ping-button-primary-bg;
+    border: $ping-button-primary-border;
+    padding: 4px 20px !important;
+    color: $ping-button-primary-color;
+    font-size: $font-size-base;
+    width: 165px;
+}
+.button--secondary {
+    background-color: $ping-button-secondary-bg;
+    border: $ping-button-secondary-border;
+    color: $ping-button-secondary-color;
+}
+.button--tertiary {
+    background-color: $ping-button-tertiary-bg;
+    border: $ping-button-tertiary-border;
+    color: $ping-button-tertiary-color;
 }
 
-.button--secondary {
-    background-color: #7094AA;
-    border-color: #7094AA;
-    color: #fff;
+button.tryit {
+    margin-top: map-get($spacers, 5);
+}
+
+button.tryit, button.sendbutton {
+    margin-left: 3px;
+    i {
+        margin-left: map-get($spacers, 2);
+    }
 }

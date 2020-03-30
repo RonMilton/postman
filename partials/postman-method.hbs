@@ -1,20 +1,21 @@
 <div class="method">
     <hr/>
     <div class="content">
-        <h3 class="{{method.request.method}} method" id="{{method.htmlindex}}">{{method.name}}</h3>
-        <pre><code class="content-url">{{{method.request.url.raw}}}</code></pre>
-        <div>{{{method.request.description}}}</div>
-        {{#if method.request.header}}
-        <h4>Headers</h4>
-        <div class="headers-table">
-            {{#each method.request.header as |head key|}}
-                <div class="headGroup"><span class="headKey">{{this.key}}</span><span class="headVal">{{this.value}}</span></div>
-            {{/each}}
-        </div>
+        <h3 class="{{method}} method" id="{{htmlid}}">{{name}}</h3>
+        <pre><code class="content-url">{{{raw}}}</code></pre>
+        <div>{{{description}}}</div>
+        {{#if headers.length}}
+            <h4>Headers</h4>
+            <p>{{head}}</p>
+            <div class="headers-table">
+                {{#each headers as |head key|}}
+                    <div class="headGroup"><span class="headKey">{{this.key}}</span><span class="headVal">{{this.value}}</span></div>
+                {{/each}}
+            </div>
         {{/if}}
-        {{#if method.request.body.raw}}
+        {{#if body}}
             <h4>Body<span> raw (
-                {{#each method.request.header as |head key|}}
+                {{#each headers as |head key|}}
                     {{#equals this.key 'Content-Type'}}
                         {{this.value}}
                     {{/equals}}
@@ -23,94 +24,130 @@
                     {{/equals}}
                 {{/each}}
                 )</span></h4>
-            <pre><code>{{{postman method.request.body.raw}}}</code></pre>
+            <pre><code class="methbody">{{{postman body}}}</code></pre>
         {{/if}}
-        <h4 class="tryit" data-bind="click: openTry">Try a Request<i class="fas fa-caret-right"></i></h4>
-        <div class="tryitcard hidden">
-            <span class="clearalldata" data-bind="click: clearreqdata">Reset request data</span>
-            <div class="testreq">
-                <div class="inforow"><button data-bind="click: sendreq"><i class="fas fa-caret-right"></i>Send</button><span class="ajaxmethod">{{method.request.method}}</span><span>{{{method.request.url.raw}}}</span></div>
-                <div class="reqtabs">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active">Settings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">Headers [<span data-bind="text: headers().length"></span>]</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">Body</a>
-                        </li>
-                        <!--<li class="nav-item">
-                            <a class="nav-link">Code Generation</a>
-                        </li>-->
-                    </ul>
-                </div>
-                <div class="reqcontent">
-                    <div class="tabcontent settings">
-                        <p><strong>URL:</strong> <span data-bind="text: computedUrl"></span> <!--<i class="fas" data-bind=""></i>--><input type="hidden" class="rawurl" value="{{{method.request.url.raw}}}"/></p>
-                        <p><strong>Protocol:</strong> <select data-bind="options: protocols, value: selprotocol"></select></p>
-                        <p><strong>Variables:</strong></p>
-                        <ul class="urlvars" data-bind="foreach: urlvars">
-                            <li><span data-bind="text: raw, css: { error: $root.sendtried() && !obs() }"></span> <input type="text" data-bind="attr: {placeholder: raw}, textInput: obs, css: { error: $root.sendtried() && !obs() }" /></li>
+        {{#if hasurlvars}}
+            <button class="tryit button--primary" data-bind="click: openTry">Try a Request<i class="fas fa-caret-right"></i></button>
+            <div class="tryitcard hidden">
+                <p class="{{#if hascookie}}cookiewarning{{/if}}">{{#if hascookie}}<span>Warning:</span> This call sends cookies. Consult your browser's instruction manual to properly configure.{{/if}}</p>
+                <span class="clearalldata" data-bind="click: clearreqdata">Reset request data</span>
+                <div class="testreq">
+                    <div class="inforow row">
+                        <div class="col-sm-2 align-self-center">
+                            <button data-bind="click: sendreq" class="button--secondary sendbutton">Send<i data-bind="visible: !$root.sendtried()" class="fas fa-caret-right"></i><i data-bind="visible: $root.sendtried()" class="fas fa-sync-alt"></i></button>
+                        </div>
+                        <div class="col-sm-2 align-self-center">
+                            <p class="ajaxmethod {{method}}">{{method}}</p>
+                        </div>
+                        <div class="col-sm-8 align-self-center">
+                            <p>{{{raw}}}</p>
+                        </div>
+                    </div>
+                    <div class="reqtabs">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a data-bind="css: {errortext: sendtried() && emptyvar()}" class="nav-link active">Settings</a data-bind="css: {errortext: $root.sendtried() && authheader() && !authtoken()">
+                            </li>
+                            <li class="nav-item">
+                                <a data-bind="css: {errortext: sendtried() && authheader() && !authtoken()}" class="nav-link">Headers [<span data-bind="text: totalheaders"></span>]</a>
+                            </li>
+                            <li data-bind="visible: !showreqbody()" class="nav-item">
+                                <a class="nav-link">Body</a>
+                            </li>
+                            <!--<li class="nav-item">
+                                <a class="nav-link">Code Generation</a>
+                            </li>-->
                         </ul>
                     </div>
-                        <div class="tabcontent headers hidden">
-                            <!--<p><strong>Authorization token:</strong><textarea rows="8" data-bind="textInput: authtoken"></textarea><span data-bind="click: selectall, visible: authtoken()">Select all</span></p>-->
-                            
-                            <p><strong>Headers to send:</strong></p>
-                            <p data-bind="visible: headers().length == 0">None</p>
-                            {{#each method.request.header as |head key|}}
-                                <div class="headGroup"><input type="hidden" class="headKey" value="{{{this.key}}}"/><input type="hidden" class="headVal" value="{{{this.value}}}"/></div>
-                            {{/each}}
-                            
-                            <ul data-bind="foreach: headers">
-                                <li><input type="text" data-bind="textInput: key"/><input type="text" data-bind="textInput: value"/><i class="far fa-trash-alt" data-bind="click: $root.trashHeader"></i></li>
-                            </ul>
-                            <button data-bind="click: addHeader">Add header</button>
+                    <div class="reqcontent">
+                        <div class="tabcontent settings">
+                            <div class="wrapper row justify-content-start">
+                                <div class="left col-sm-2">
+                                    <p class="urllabel"><strong>URL:</strong></p>
+                                    <p><strong>Protocol:</strong></p>
+                                    <p><strong>Variables:</strong></p>
+                                </div>
+                                <div class="right col-sm-9">
+                                    <p class="urldisplayp" data-bind="text: computedUrl, css: {error: $root.sendtried() && !urlcheck()}"></p>
+                                    <input type="hidden" class="rawurl" value="{{{raw}}}"/>
+                                    <p><select data-bind="options: protocols, value: selprotocol"></select></p>
+                                    <div class="urlvars" data-bind="foreach: urlvars">
+                                        <p><span data-bind="text: raw, css: { error: $root.sendtried() && !obs() }"></span> <input type="text" data-bind="attr: {placeholder: raw}, textInput: obs, css: { error: $root.sendtried() && !obs() }" /></p>
+                                    </div>
+                                    </p>
+                                </div>
+                                
+                            </div>
                         </div>
-                    <div class="tabcontent body hidden">
-                        <input type="hidden" class="reqbody" value="{{lessthan method.request.body.raw}}"/>
-                        <textarea data-bind="textInput: reqbody" rows="6"></textarea>
+                            <div class="tabcontent headers hidden">
+                                <div class="wrapper">
+                                    <p><strong>Headers to send:</strong></p>
+                                    <p data-bind="visible: !totalheaders()">None</p>
+                                    <p data-bind="visible: authheader()"><strong class="{{auth}}">Authorization token:</strong><textarea rows="8" data-bind="textInput: authtoken, attr: {placeholder: authtokeninitial}" ></textarea><span data-bind="click: selectall, visible: authtoken()">Select all</span></p>
+                                    {{#each headers as |head key|}}
+                                        <div class="headGroup">
+                                            <input type="hidden" class="headKey" value="{{{this.key}}}"/><input type="hidden" class="headVal" value="{{{this.value}}}"/>
+                                        </div>
+                                    {{/each}}
+                                    
+                                    <ul data-bind="foreach: headers">
+                                        <li><input type="text" data-bind="textInput: key"/><input type="text" data-bind="textInput: value"/><i class="far fa-trash-alt" data-bind="click: $root.trashHeader"></i></li>
+                                    </ul>
+                                    <button data-bind="click: addHeader" class="button--tertiary">Add header <i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        <div data-bind="visible: !showreqbody()" class="tabcontent body hidden">
+                            <div class="wrapper">
+                                <input type="hidden" class="reqbody" value="{{body}}"/>
+                                <textarea data-bind="textInput: reqbody" rows="6"></textarea>
+                            </div>
+                            
+                        </div>
+                        <!--<div class="tabcontent code-generation hidden"><p>Code Generation</p><p>Will need to:<ul><li>Change language</li><li>Use current UI data</li></ul></p><p>URL: <span data-bind="text: computedUrl"></span><p>Method: <span data-bind="text: method"></span></p><p>Headers:</p><ul data-bind="foreach: headers"><li><span data-bind="text: key"></span>: <span data-bind="text: value"></span></li></ul></p><p>Body:<br><span data-bind="text: reqbody"></span></p></div>-->
                     </div>
-                    <!--<div class="tabcontent code-generation hidden"><p>Code Generation</p><p>Will need to:<ul><li>Change language</li><li>Use current UI data</li></ul></p><p>URL: <span data-bind="text: computedUrl"></span><p>Method: <span data-bind="text: method"></span></p><p>Headers:</p><ul data-bind="foreach: headers"><li><span data-bind="text: key"></span>: <span data-bind="text: value"></span></li></ul></p><p>Body:<br><span data-bind="text: reqbody"></span></p></div>-->
-                </div>
-            </div>
-            
-            <div class="testres hidden">
-            <h4>Server Response</h4>
-                <div class="restabs">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active">Body</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">Headers [<span data-bind="text: resheaders().length"></span>]</a>
-                        </li>
-                    </ul>
                 </div>
                 
-                <div class="rescontent">
-                    <div class="response d-flex justify-content-center">
-                        <div class="spinner-grow" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                    <div class="tabcontent body hidden">
-                        <p>Status: <span data-bind="text: xhrstatus"></span> <span data-bind="text: xhrstatustext"></span></p>
-                        <p data-bind="visible: !xhrstatus()">This error typically means either your URL is not constructed properly or the server is not configured for CORS requests. Check that the URL in the Settings tab above is what you expect. If the URL is correct, the server you're attempting to access may not be configured for cross-site requests.</p>
-                        <pre data-bind="visible: xhrstatus()"><code data-bind="text: resbody"></code></pre>
-                    </div>
-                    <div class="tabcontent headers hidden">
-                        <p data-bind="visible: resheaders().length"><strong>Headers received:</strong>
-                        <ul data-bind="foreach: resheaders">
-                            <li><span data-bind="text: $data"></span></li>
+                <div class="testres hidden">
+                <h4>Server Response</h4>
+                    <div class="restabs">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active">Body</a>
+                            </li>
+                            <li data-bind="visible: resheaders().length" class="nav-item">
+                                <a class="nav-link">Headers [<span data-bind="text: resheaders().length"></span>]</a>
+                            </li>
                         </ul>
-                        </p>
+                    </div>
+                    
+                    <div class="rescontent">
+                        <div class="response d-flex justify-content-center">
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="tabcontent body hidden">
+                            <div class="wrapper">
+                                <p>Status: <span data-bind="text: xhrstatus"></span> <span data-bind="text: xhrstatustext"></span></p>
+                                <p data-bind="visible: !xhrstatus()">This error typically means either your URL is not constructed properly or the server is not configured for CORS requests. Check that the URL in the Settings tab above is what you expect. If the URL is correct, the server you're attempting to access may not be configured for cross-site requests.</p>
+                                <pre data-bind="visible: xhrstatus()"><code data-bind="text: resbody"></code></pre>
+                            </div>
+                            
+                        </div>
+                        <div data-bind="visible: resheaders().length" class="tabcontent headers hidden">
+                            <div class="wrapper">
+                                <p><strong>Headers received:</strong>
+                                <div data-bind="foreach: resheaders">
+                                    <p><span data-bind="text: $data"></span></p>
+                                </div>
+                                </p>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {{/if}}
     </div>
 
     <div class="samples">
@@ -118,23 +155,30 @@
             <p class="header">{{method.name}}</p>
             <div class="iconrow"><i class="fas fa-expand expand-icon hidden" data-toggle="tooltip" data-placement="left" title data-original-title="Toggle window expand" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i><i class="fas fa-align-justify wrap-icon hidden" data-toggle="tooltip" data-placement="left" title data-offset="0, 24" data-original-title="Toggle word wrap"></i></div>
             <div class="devp-code-block">
-                <pre class="req curl"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{method.request.commands.curl}}}</code></pre>
-                <pre class="req php hidden"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{method.request.commands.php}}}</code></pre>
-                <pre class="req python hidden"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{method.request.commands.python}}}</code></pre>
-                <pre class="req node hidden"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{method.request.commands.node}}}</code></pre>
-                <pre class="req go hidden"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{method.request.commands.go}}}</code></pre>
-                <pre class="req jquery hidden"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{method.request.commands.jquery}}}</code></pre>
-                <pre class="req http hidden"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{method.request.commands.http}}}</code></pre>
+                <div class="spinner-border text-light hidden" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                {{#each reqlangs as |lang index| }}
+                    {{#unless index}}
+                        <pre class="req {{lang.lang}}"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{lang.req}}}</code></pre>
+                    {{else}}
+                        <pre class="req {{lang.lang}} hidden"><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p><code>{{{lang.req}}}</code></pre>
+                    {{/unless}}
+                {{/each}}
             </div>
         </div>
+        {{#if responses.length}}
         <div class="exampleRes">
-            {{#each method.response as |response reskey|}}
-                
+            {{#each responses as |response reskey|}}
                 <p class="header">{{response.code}} {{response.status}}</p>
                 <div class="iconrow"><i class="fas fa-expand expand-icon hidden" data-toggle="tooltip" data-placement="left" title data-original-title="Toggle window expand"></i><i class="fas fa-align-justify wrap-icon hidden" data-toggle="tooltip" data-placement="left" title data-offset="0, 24" data-original-title="Toggle word wrap"></i></div>
-                <pre><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p>{{{response.body}}}</pre>
+                <div class="devp-code-block">
+                    <pre><p class="copyp"><i class="far fa-copy copytoclipboard" data-bind="click: copytoclipboard" data-toggle="tooltip" data-placement="left" title data-original-title="Copy to clipboard"></i></p>{{{response.body}}}</pre>
+                </div>
             {{/each}}
         </div>
+        {{/if}}
     </div>
 
 </div>
+

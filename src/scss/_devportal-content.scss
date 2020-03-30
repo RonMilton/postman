@@ -221,6 +221,10 @@
 h3.method{
     cursor: default;
 }
+.errortext {
+    font-weight: bold;
+    color: $error-color !important;
+}
 
 
 

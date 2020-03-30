@@ -7,6 +7,10 @@
     .exampleRes, .exampleReq {
         position: relative;
         margin-bottom: $spacer;
+        border: 3px solid $bermuda-gray;
+        border-bottom-color: $pickled-bluewood;
+        border-right-color: $pickled-bluewood;
+        
         p.header {
             line-height: map-get($map: $spacers, $key: 5);
             border: 1px solid $icon-row-background;
@@ -26,8 +30,16 @@
     .exampleRes p.header::before {
         content: 'Example Response';
     }
-    .exampleReq p.header::before {
-        content: 'Example Request';
+    .exampleReq {
+        p.header::before {
+            content: 'Example Request';
+        }
+        .spinner-border.text-light {
+            position: absolute;
+            top: 7rem;
+            z-index: 1;
+            left: 1rem;
+        }
     }
     p > code {
         white-space: nowrap;
@@ -39,7 +51,10 @@
             background: #f7f7f7;
             padding: 2px 5px 0;
             border-radius: 3px;
-            font-family: $font-code;
+            font-size: .8rem;
+            &.methbody {
+                font-size: 12px;
+            }
         }
         pre {
             padding: $spacer;

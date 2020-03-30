@@ -4,6 +4,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    padding-bottom: $ping-padding-bottom;
     max-height: 100vh;
     overflow-y: auto;
     #navigation, #offpage-wrapper {
@@ -66,36 +67,31 @@
             }
             &.GET::before {
                 content: 'GET';
-                //background: $green;
-                color: $green;
+                color: $meth-get-color;
                 padding-right: 17px;
             }
             &.POST::before {
                 content: 'POST';
-                //background: $orange;
-                color: $orange;
+                color: $meth-post-color;
                 padding-right: 10px;
             }
             &.PATCH::before {
                 content: 'PATCH';
-                //background: $gray-600;
-                color: $gray-600;
+                color: $meth-patch-color;
             }
             &.DELETE::before {
                 content: 'DEL';
-                //background: $red;
-                color: $red;
+                color: $meth-delete-color;
                 padding-right: 17px;
             }
             &.PUT::before{
                 content: 'PUT';
-                //background: $blue;
-                color: $blue;
+                color: $meth-put-color;
                 padding-right: 17px;
             }
         }
         i {
-            color: $gray-600;
+            color: $meth-patch-color;
             padding-right: map-get($spacers, 1);
             cursor: pointer;
         }

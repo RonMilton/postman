@@ -1,12 +1,19 @@
 .tryitcard{
     padding-top: $spacer;
     position: relative;
-    span.clearalldata {
+    .cookiewarning {
+        margin-bottom: 0;
+        padding-left: map-get($spacers, 1);
+        span {
+            font-weight: bold;
+        }
+    }
+    .clearalldata {
         font-size: $font-size-sm;
         color: $link-color;
         cursor: pointer;
         position: absolute;
-        top: 5rem;
+        top: 8rem;
         right: 1rem;
         &:hover {
             text-decoration: underline;
@@ -24,16 +31,22 @@
             margin-bottom: 0;
             list-style: none;
         }
-        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+        .nav-tabs .nav-item.show .nav-link {
+            
             color: #495057;
-            background-color: #fff;
+            //background-color: #fff;
             border-color: #dee2e6 #dee2e6 #fff;
         }
         .nav-tabs .nav-item {
+            .active {
+                background: $ping-request-active-bg;
+                border-color: #dee2e6 #dee2e6 $ping-request-active-bg;
+            }
             margin-bottom: -1px;
         }
         .nav-tabs .nav-link {
-            border: 1px solid transparent;
+            border: 1px solid #dee2e6;
+            border-bottom: 0;
             border-top-left-radius: 0.25rem;
             border-top-right-radius: 0.25rem;
             cursor: pointer;
@@ -44,13 +57,43 @@
         }
     }
     .inforow {
+        height: 4rem;
         button {
             i {
                 margin-right: map-get($spacers, 2);
             }
         }
+        p {
+            margin-bottom: 0;
+        }
         span {
             margin-left: $spacer;
+        }
+        .ajaxmethod {
+            padding: 6px;
+            color: white;
+            border: 1px solid #ededed;
+            text-align: center;
+            &.PUT {
+                background-color: $meth-put-color;
+                border-color: $meth-put-border-color;
+            }
+            &.GET {
+                background-color: $meth-get-color;
+                border-color: $meth-get-border-color;
+            }
+            &.PATCH {
+                background-color: $meth-patch-color;
+                border-color: $meth-patch-border-color;
+            }
+            &.POST {
+                background-color: $meth-post-color;
+                border-color: $meth-post-border-color;
+            }
+            &.DELETE {
+                background-color: $meth-delete-color;
+                border-color: $meth-delete-border-color;
+            }
         }
     }
     
@@ -58,6 +101,10 @@
         border: 1px solid #dee2e6;
         border-top: 0;
         padding: $spacer;
+        background: $ping-request-active-bg;
+        .wrapper {
+            padding: $spacer;
+        }
         .tabcontent {
             position: relative;
             &.headers {
@@ -73,9 +120,21 @@
                         }
                     }
                 }
+                strong.bearer:after {
+                    content: " Bearer";
+                }
+                strong.basic:after {
+                    content: " Basic";
+                }
             }
             &.settings {
-                ul {
+                .urlvars {
+                    span {
+                        min-width: 100px;
+                        display: inline-block;
+                    }
+                }
+                /*ul {
                     list-style-type: none;
                     li {
                         padding-bottom: $spacer;
@@ -84,7 +143,7 @@
                             display: inline-block;
                         }
                     }
-                }
+                }*/
                 .fa-check-circle {
                     color: green;
                     margin-left: $spacer;
@@ -105,24 +164,41 @@
         
     }
     .reqcontent {
+        
         .tabcontent {
+            
             &.settings{
+                
+                .urldisplayp, .urllabel {
+                    padding: 0;
+                    font-size: 1.1rem !important;
+                    width: 100%;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    white-space: pre;
+                    height: 25px;
+                }
+                select {
+                    background: $white;
+                }
                 input[type="text"]{
                     width: 50%;
                 }
-                input.error {
-                    background-color: $error-bg;
-                }
-                span.error {
-                    font-weight: bold;
-                    &:after {
-                        content: " **";
-                    }
+                input[class="error"], .urldisplayspan.error{
+                    background: $error-bg;
                 }
             }
             &.headers {
                 input[type="text"]{
                     width: 40%;
+                }
+                button i {
+                    font-size: 10px;
+                    vertical-align: middle;
+                    padding-bottom: 2px;
+                }
+                li i {
+                    cursor: pointer;
                 }
                 span {
                     color: $link-color;
@@ -152,9 +228,3 @@
         }
     }
 }
-h4.tryit {
-    cursor: pointer;
-    i {
-        margin-left: map-get($spacers, 2);
-    }
-} 

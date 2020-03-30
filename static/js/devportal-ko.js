@@ -18,9 +18,29 @@ $(function() {
         self.xhrstatustext = ko.observable();
         self.method = ko.observable("GET");
         self.authtoken = ko.observable();
+        self.authtokeninitial = ko.observable();
+        self.authheader = ko.observable(0);
+        self.authtype = ko.observable();
+
+        self.emptyvar = ko.pureComputed(function(){
+            let truth = false;
+            $.each(self.urlvars(), function(index, data){
+                if (!data.obs()) truth = true;
+            })
+            return truth;
+        }, this);
+
+        self.showreqbody = ko.pureComputed(function(){
+            return self.method() == "GET";
+        }, this);
+
+        self.totalheaders = ko.pureComputed(function(){
+            return self.headers().length + self.authheader();
+        }, this);
         
         self.urlcheck = ko.pureComputed(function(){
-            return self.URLPATTERN.test(self.computedUrl().trim());
+            //return self.URLPATTERN.test(self.computedUrl().trim());
+            return true;
         }, this);
         self.computedUrl = ko.computed(function(){
 
@@ -39,10 +59,7 @@ $(function() {
                 
                 
             })
-            
-            
             return returl;
-
         }, this);
         self.sendreqcheck = ko.computed(function(){
             valid = true;
@@ -68,8 +85,17 @@ $(function() {
             self.method(reqcard.find('.ajaxmethod').text());
             
             if (caret.hasClass("fa-caret-right")) { 
+
+                // Any button with tertiary class will have been open
+                $('.tryit.button--tertiary').children('i').removeClass('fa-caret-down').addClass('fa-caret-right');
+                $('.tryit.button--tertiary').addClass('button--primary').removeClass('button--tertiary');
+                
+
                 // Open and initiate card
                 self.resetui(reqcard);
+
+                // Apply different style
+                target.removeClass('button--primary').addClass('button--tertiary');
                 
                 $('h4 i.fa-caret-down').removeClass('fa-caret-down').addClass('fa-caret-right');
                 caret.removeClass('fa-caret-right').addClass('fa-caret-down');
@@ -88,6 +114,7 @@ $(function() {
                 
             } else {
                 caret.removeClass('fa-caret-down').addClass('fa-caret-right');
+                target.removeClass('button--tertiary').addClass('button--primary');
                 reqcard.addClass('hidden');
                 resp.addClass('hidden');
                 rescontent.addClass('hidden');
@@ -123,26 +150,6 @@ $(function() {
             let trashindex = $(target.parents('ul').children('li')).index($(event.target).parent());
             self.headers.splice(trashindex, 1);
         }
-
-        self.getcorsauth = function(data, event){
-            $.ajax({
-                //url: "https://api.pingone.com/v1/environments/9ad15e9e-3ac6-43f7-a053-d46b87d6c4a7",
-                url: self.computedUrl(),
-                method: self.method(),
-                headers: {
-                    'Authorization': 'Bearer ' + self.authtoken()
-                },
-                success: function(res, status, xhr){
-                    alert("Something happened");
-
-                },
-                error: function(xhr, textStatus, thrownErr) {
-                    alert(xhr.status + " " + thrownErr);
-                }
-            }).done(function(data){
-                console.log(data);
-            });
-        }
         
         self.sendreq = function(data, event){
             let target = $(event.target);
@@ -160,7 +167,7 @@ $(function() {
             self.xhrstatustext('');
 
            if (self.sendreqcheck()){
-                self.sendtried(false);
+                
                 testres.removeClass('hidden');
 
                 spinner.removeClass('hidden');
@@ -169,7 +176,6 @@ $(function() {
                 for (head in self.headers()){
                     ajaxhead[self.headers()[head].key()] = self.headers()[head].value();
                 }
-    
                 $.ajax({
                     //url: self.computedUrl(),
                     url: self.computedUrl(),
@@ -220,9 +226,9 @@ $(function() {
             }
             
         }
-        $('h3.method').each(function() {
+       /* $('h3.method').each(function() {
             self.ids.push(this.id);
-        });
+        });*/
         for (id in self.ids){
             console.log(self.ids[id])
         }
@@ -261,6 +267,7 @@ $(function() {
             self.urlvars.removeAll();
             self.urlvarsstore.removeAll();
             self.reqbody(body);
+            self.authheader(0);
         
             self.buildurlvars(rawurl);
             self.buildheaders(headers);
@@ -287,6 +294,9 @@ $(function() {
             self.resbody('');
             self.xhrstatus('');
             self.xhrstatustext('');
+            self.authheader(0);
+            self.sendtried(false);
+            
         }
 
         self.resetui = function(card){
@@ -341,13 +351,28 @@ $(function() {
         }
 
         self.buildheaders = function(headers){
+            
             $(headers).each(function(index, element){
-                let k = $(element).children('.headKey').val();
-                let v = $(element).children('.headVal').val();
-                self.headers.push({ key: ko.observable(k), value: ko.observable(v) });
+                let k = $(element).find('.headKey').val();
+                let v = $(element).find('.headVal').val();
+                if ( k == "" ){
+                    k = $(element).find('.headKey').text();
+                }
+                
+                if (k == "authorization"){
+                    self.authheader(1);
+                    
+                    self.authtokeninitial(v.replace(/^[Bb]earer\s/, ""));
+                    
+                    //self.authtoken(v.replace(/[Bb]earer\s/, ""));
+                } else {
+                    self.headers.push({ key: ko.observable(k), value: ko.observable(v) });
+                }
+                
 
             });
         }
+
         
     };
     ko.applyBindings(new reqmodel());

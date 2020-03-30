@@ -1,7 +1,6 @@
 .content-sub-desc, .content {
     table {
-        max-width: 100%;
-        display: inline-block;
+        width: 100%;
         overflow-x: auto;
         padding-bottom: $spacer * 2;
         tr {
@@ -17,6 +16,10 @@
         }
         td {
             padding: 8px;
+            ul {
+                padding-left: 0;
+                margin-left: 8px;
+            }
         }
     }
 }

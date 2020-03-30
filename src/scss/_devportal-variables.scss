@@ -20,6 +20,7 @@ $bermuda-gray: #7094AA;
 $heather: #A5BBC3;
 $pickled-bluewood: #263746;
 $madison: #2E4355;
+$porcelain: #F7F8F9;
 $pacific-blue: #0082C9;
 $ping-red: #B8232F;
 $p14c-red: #B62528;
@@ -28,7 +29,8 @@ $p14c-black: #26374A;
 
 $p14c-text: $p14c-black;
 $link-color: $pacific-blue;
-$error-bg: rgba(182, 37, 40, 0.30);
+$error-bg: #ffb4a1;
+$error-color: $red;
 
 $left-pane-width: 60%;
 $right-pane-width: 100% - $left-pane-width;
@@ -38,6 +40,34 @@ $right-pane-margin: $left-pane-width + $right-pane-width/110;
 $nav-pane-background: #ededed;
 $right-pane-background: rgba(53, 55, 56, 1); // #353738
 $samples-color: $white;
-$icon-row-background: rgba(235, 244, 247, .5);
+$icon-row-background: $bermuda-gray;
 //$icon-row-background: rgba(112, 148, 170, 1);
 $icon-row-color: $right-pane-background;
+
+$ping-padding-bottom: map-get($spacers, 5) * 2;
+
+$ping-button-primary-bg: #2B80C3;
+$ping-button-primary-border: 1px solid #2B80C3;
+$ping-button-primary-color: $white;
+$ping-button-secondary-bg: #7094AA;
+$ping-button-secondary-border: 1px solid #7094AA;
+$ping-button-secondary-color: $white;
+$ping-button-tertiary-bg: transparent;
+$ping-button-tertiary-border: 1px solid #2B80C3;
+$ping-button-tertiary-color: #2B80C3;
+
+// Try it feature variables
+$ping-request-active-bg: $porcelain;
+
+$meth-post-color: $orange;
+$meth-post-border-color: #E64B07;
+$meth-get-color: $green;
+$meth-get-border-color: #2DBD24;
+$meth-patch-color: $gray-600;
+$meth-patch-border-color: #111;
+$meth-delete-color: $red;
+$meth-delete-border-color: #F22EA4;
+$meth-put-color: $blue;
+$meth-put-border-color: #0CB0E8;
+
+$chalkboard: #353738;
