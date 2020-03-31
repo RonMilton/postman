@@ -9,6 +9,7 @@ const Metalsmith = require('metalsmith'),
       registerHelpers = require('metalsmith-register-helpers'),
       postmanReader = require('./lib/pingid-postman-api'),
       metallic = require('metalsmith-metallic'),
+      msIf = require('metalsmith-if'),
       jquery = require('metalsmith-jquery'),
       serve = require('metalsmith-serve'),
       watch = require('metalsmith-watch');
@@ -169,6 +170,31 @@ Metalsmith(__dirname)
       }
     })
   )
+    /*
+   * Run local server.
+   */
+  .use(msIf(
+    DEPLOYMENT_STAGE === 'development',
+    serve({
+      port: 4001,
+      verbose: true,
+      http_error_files: {
+        404: "/errors/404.html"
+      }
+    })
+  ))
+
+  .use(msIf(
+    DEPLOYMENT_STAGE === 'docker',
+    serve({
+      host: "0.0.0.0",
+      port: 4001,
+      verbose: true,
+      http_error_files: {
+        404: "/errors/404.html"
+      }
+    })
+  ))
 
   .build((err, files) => {
     if (err) throw err;
