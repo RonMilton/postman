@@ -40,7 +40,7 @@
     "path": "^0.12.7",
     "postman-code-generators": "^0.2.4",
     "postman-collection": "^3.6.0",
-    "prismjs": "^1.19.0"
+    "prismjs": "^1.25.0"
   },
   "devDependencies": {
     "better-npm-run": "^0.1.1"
